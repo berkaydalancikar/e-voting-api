@@ -1,0 +1,16 @@
+{
+  "db": {
+    "url": "postgres://postgres:berkaydalancikar@localhost:5432/e-voting-db",
+    "config": {
+      "host": "127.0.0.1",
+      "username": "postgres",
+      "password": "berkaydalancikar",
+      "database": "e-voting-db",
+      "dialect": "postgres",
+      "migrationStorageTableName": "sequelizeMeta",
+      "dialectOptions": {},
+      "define": {},
+      "timezone": "+03:00"
+    }
+  }
+}
