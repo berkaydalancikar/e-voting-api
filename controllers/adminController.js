@@ -1,12 +1,16 @@
 const config = require('config')
 const { db, ApiError } = require('./baseController')
-const { INVALID_PASSWORD, USER_DOES_NOT_EXIST } = require('../data/errors')
+const {
+  INVALID_PASSWORD,
+  USER_DOES_NOT_EXIST,
+  OLD_PASSWORD_NOT_MATCH
+} = require('../data/errors')
 
 exports.login = async (req, res) => {
   const { username, password } = req.body
   const user = await db.admin.findOne({
     where: { username },
-    attributes: ['username', 'department', 'password', 'id']
+    attributes: ['id', 'username', 'department', 'password', 'status']
   })
 
   if (!user) {
@@ -21,18 +25,19 @@ exports.login = async (req, res) => {
     throw new ApiError(INVALID_PASSWORD)
   }
 
-  const { id } = user
+  const { id, department, status } = user
   const token = await res.jwtSign(
     {
-      id
+      id,
+      department,
+      status
     }
     /*    { expiresIn: config.get('app.adminJwtExpiry') }   */
   )
 
-  return res.send({
-    token,
-    user: { id }
-  })
+  isOldPassword = user.status === 'passive'
+
+  return res.send({ token, isOldPassword })
 }
 
 exports.updatePassword = async (req, res) => {
@@ -49,6 +54,7 @@ exports.updatePassword = async (req, res) => {
     throw new ApiError(OLD_PASSWORD_NOT_MATCH)
   }
   user.password = password
+  user.status = 'active'
 
   await user.save()
   res.send()

@@ -2,11 +2,6 @@ const notificationController = require('../controllers/notificationController')
 
 module.exports = async fastify => {
   const preValidation = [fastify.admin]
-  fastify.get(
-    '/all-notifications',
-    { preValidation },
-    notificationController.getNotifications
-  )
   fastify.post(
     '/notifications',
     { preValidation },
@@ -17,16 +12,14 @@ module.exports = async fastify => {
     { preValidation },
     notificationController.deleteNotification
   )
-
-  const authenticate = [fastify.authenticate]
-  fastify.get(
-    '/notifications/:id',
-    { authenticate },
-    notificationController.getNotification
-  )
   fastify.get(
     '/notifications',
-    { authenticate },
-    notificationController.getNotificationsByDepartment
+    { preValidation },
+    notificationController.getNotifications
+  )
+  fastify.get(
+    '/notifications/:id',
+    { preValidation },
+    notificationController.getNotification
   )
 }

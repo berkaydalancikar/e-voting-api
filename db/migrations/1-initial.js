@@ -6,15 +6,17 @@ var Sequelize = require('sequelize');
  * Actions summary:
  *
  * createTable "admins", deps: []
+ * createTable "elections", deps: []
  * createTable "notifications", deps: []
  * createTable "students", deps: []
+ * createTable "candidates", deps: [students]
  *
  **/
 
 var info = {
     "revision": 1,
-    "name": "admin",
-    "created": "2021-04-27T08:28:46.538Z",
+    "name": "initial",
+    "created": "2021-05-30T11:14:39.423Z",
     "comment": ""
 };
 
@@ -36,10 +38,48 @@ var migrationCommands = function(transaction) {
                         "field": "username",
                         "allowNull": false
                     },
+                    "department": {
+                        "type": Sequelize.STRING,
+                        "field": "department",
+                        "allowNull": false
+                    },
                     "password": {
                         "type": Sequelize.STRING,
                         "field": "password",
                         "allowNull": false
+                    },
+                    "status": {
+                        "type": Sequelize.STRING,
+                        "field": "status",
+                        "defaultValue": "passive"
+                    }
+                },
+                {
+                    "transaction": transaction
+                }
+            ]
+        },
+        {
+            fn: "createTable",
+            params: [
+                "elections",
+                {
+                    "id": {
+                        "type": Sequelize.INTEGER,
+                        "field": "id",
+                        "autoIncrement": true,
+                        "primaryKey": true,
+                        "allowNull": false
+                    },
+                    "department": {
+                        "type": Sequelize.STRING,
+                        "field": "department",
+                        "allowNull": false
+                    },
+                    "status": {
+                        "type": Sequelize.STRING,
+                        "field": "status",
+                        "defaultValue": "passive"
                     }
                 },
                 {
@@ -73,20 +113,6 @@ var migrationCommands = function(transaction) {
                         "type": Sequelize.STRING,
                         "field": "department",
                         "allowNull": false
-                    },
-                    "createdAt": {
-                        "type": Sequelize.DATE,
-                        "field": "createdAt",
-                        "allowNull": false
-                    },
-                    "updatedAt": {
-                        "type": Sequelize.DATE,
-                        "field": "updatedAt",
-                        "allowNull": false
-                    },
-                    "deletedAt": {
-                        "type": Sequelize.DATE,
-                        "field": "deletedAt"
                     }
                 },
                 {
@@ -107,7 +133,7 @@ var migrationCommands = function(transaction) {
                         "allowNull": false
                     },
                     "studentId": {
-                        "type": Sequelize.INTEGER,
+                        "type": Sequelize.STRING,
                         "field": "studentId",
                         "unique": true,
                         "allowNull": false
@@ -124,23 +150,84 @@ var migrationCommands = function(transaction) {
                     },
                     "mail": {
                         "type": Sequelize.STRING,
-                        "field": "mail"
+                        "field": "mail",
+                        "defaultValue": "this.studentId@stu.iku.edu.tr"
+                    },
+                    "password": {
+                        "type": Sequelize.STRING,
+                        "field": "password",
+                        "allowNull": false
                     },
                     "primaryDepartment": {
                         "type": Sequelize.STRING,
                         "field": "primaryDepartment",
                         "allowNull": false
                     },
-                    "secondaryDepartment": {
-                        "type": Sequelize.STRING,
-                        "field": "secondaryDepartment",
-                        "allowNull": true
+                    "grade": {
+                        "type": Sequelize.INTEGER,
+                        "field": "grade",
+                        "allowNull": false
+                    },
+                    "gpa": {
+                        "type": Sequelize.FLOAT,
+                        "field": "gpa",
+                        "allowNull": false
                     },
                     "status": {
                         "type": Sequelize.STRING,
                         "field": "status",
                         "defaultValue": "passive",
                         "allowNull": false
+                    },
+                    "hasVoted": {
+                        "type": Sequelize.STRING,
+                        "field": "hasVoted",
+                        "defaultValue": "no",
+                        "allowNull": false
+                    }
+                },
+                {
+                    "transaction": transaction
+                }
+            ]
+        },
+        {
+            fn: "createTable",
+            params: [
+                "candidates",
+                {
+                    "id": {
+                        "type": Sequelize.INTEGER,
+                        "onUpdate": "CASCADE",
+                        "onDelete": "NO ACTION",
+                        "references": {
+                            "model": "students",
+                            "key": "id"
+                        },
+                        "field": "id",
+                        "autoIncrement": true,
+                        "primaryKey": true,
+                        "allowNull": false
+                    },
+                    "studentId": {
+                        "type": Sequelize.STRING,
+                        "field": "studentId",
+                        "allowNull": false
+                    },
+                    "department": {
+                        "type": Sequelize.STRING,
+                        "field": "department",
+                        "allowNull": false
+                    },
+                    "description": {
+                        "type": Sequelize.STRING,
+                        "field": "description",
+                        "allowNull": false
+                    },
+                    "votes": {
+                        "type": Sequelize.INTEGER,
+                        "field": "votes",
+                        "defaultValue": 0
                     }
                 },
                 {
@@ -154,6 +241,18 @@ var rollbackCommands = function(transaction) {
     return [{
             fn: "dropTable",
             params: ["admins", {
+                transaction: transaction
+            }]
+        },
+        {
+            fn: "dropTable",
+            params: ["candidates", {
+                transaction: transaction
+            }]
+        },
+        {
+            fn: "dropTable",
+            params: ["elections", {
                 transaction: transaction
             }]
         },

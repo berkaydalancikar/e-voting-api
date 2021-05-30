@@ -8,14 +8,14 @@ exports.login = async (req, res) => {
   const user = await db.student.findOne({
     where: { studentId },
     attributes: [
+      'id',
       'studentId',
       'name',
       'surname',
       'mail',
+      'password',
       'primaryDepartment',
-      'secondaryDepartment',
       'status',
-      'isCandidate',
       'hasVoted'
     ]
   })
@@ -32,11 +32,26 @@ exports.login = async (req, res) => {
   if (!isPasswordMatch) {
     throw new ApiError(INVALID_PASSWORD)
   }
+
+  const { id, primaryDepartment, status, hasVoted } = user
+  const token = await res.jwtSign({
+    id,
+    studentId,
+    primaryDepartment,
+    status,
+    hasVoted
+  })
+
+  return res.send(token)
 }
 
 exports.getStudents = async (req, res) => {
-  const students = await db.student.findAndCountAll()
-  res.send(students)
+  const department = req.auth.department
+  const students = await db.student.findAll({
+    where: { primaryDepartment: department },
+    attributes: { exclude: ['password'] }
+  })
+  res.send({ students })
 }
 
 exports.getStudent = async (req, res) => {

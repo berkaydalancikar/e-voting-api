@@ -15,9 +15,21 @@
                     "field": "username",
                     "seqType": "Sequelize.STRING"
                 },
+                "department": {
+                    "allowNull": false,
+                    "field": "department",
+                    "seqType": "Sequelize.STRING"
+                },
                 "password": {
                     "allowNull": false,
                     "field": "password",
+                    "seqType": "Sequelize.STRING"
+                },
+                "status": {
+                    "defaultValue": {
+                        "value": "passive"
+                    },
+                    "field": "status",
                     "seqType": "Sequelize.STRING"
                 }
             },
@@ -31,22 +43,17 @@
                     "primaryKey": true,
                     "autoIncrement": true,
                     "field": "id",
+                    "references": {
+                        "model": "students",
+                        "key": "id"
+                    },
+                    "onDelete": "NO ACTION",
+                    "onUpdate": "CASCADE",
                     "seqType": "Sequelize.INTEGER"
                 },
                 "studentId": {
                     "allowNull": false,
-                    "unique": true,
                     "field": "studentId",
-                    "seqType": "Sequelize.STRING"
-                },
-                "name": {
-                    "allowNull": false,
-                    "field": "name",
-                    "seqType": "Sequelize.STRING"
-                },
-                "surname": {
-                    "allowNull": false,
-                    "field": "surname",
                     "seqType": "Sequelize.STRING"
                 },
                 "department": {
@@ -69,8 +76,8 @@
             },
             "indexes": []
         },
-        "emailTemplates": {
-            "tableName": "emailTemplates",
+        "elections": {
+            "tableName": "elections",
             "schema": {
                 "id": {
                     "allowNull": false,
@@ -79,12 +86,16 @@
                     "field": "id",
                     "seqType": "Sequelize.INTEGER"
                 },
-                "name": {
-                    "field": "name",
+                "department": {
+                    "allowNull": false,
+                    "field": "department",
                     "seqType": "Sequelize.STRING"
                 },
-                "subject": {
-                    "field": "subject",
+                "status": {
+                    "defaultValue": {
+                        "value": "passive"
+                    },
+                    "field": "status",
                     "seqType": "Sequelize.STRING"
                 }
             },
@@ -161,11 +172,6 @@
                     "field": "primaryDepartment",
                     "seqType": "Sequelize.STRING"
                 },
-                "secondaryDepartment": {
-                    "allowNull": true,
-                    "field": "secondaryDepartment",
-                    "seqType": "Sequelize.STRING"
-                },
                 "grade": {
                     "allowNull": false,
                     "field": "grade",
@@ -187,61 +193,14 @@
                 "hasVoted": {
                     "allowNull": false,
                     "defaultValue": {
-                        "value": false
+                        "value": "no"
                     },
                     "field": "hasVoted",
-                    "seqType": "Sequelize.BOOLEAN"
-                },
-                "isCandidate": {
-                    "allowNull": false,
-                    "defaultValue": {
-                        "value": false
-                    },
-                    "field": "isCandidate",
-                    "seqType": "Sequelize.BOOLEAN"
-                }
-            },
-            "indexes": []
-        },
-        "studentTokens": {
-            "tableName": "studentTokens",
-            "schema": {
-                "id": {
-                    "allowNull": false,
-                    "primaryKey": true,
-                    "autoIncrement": true,
-                    "field": "id",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "userId": {
-                    "allowNull": false,
-                    "field": "user_id",
-                    "references": {
-                        "model": "students",
-                        "key": "id"
-                    },
-                    "onDelete": "NO ACTION",
-                    "onUpdate": "CASCADE",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "token": {
-                    "allowNull": false,
-                    "field": "token",
                     "seqType": "Sequelize.STRING"
-                },
-                "createdAt": {
-                    "allowNull": false,
-                    "field": "createdAt",
-                    "seqType": "Sequelize.DATE"
-                },
-                "updatedAt": {
-                    "allowNull": false,
-                    "field": "updatedAt",
-                    "seqType": "Sequelize.DATE"
                 }
             },
             "indexes": []
         }
     },
-    "revision": 3
+    "revision": 1
 }

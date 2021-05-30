@@ -1,3 +1,5 @@
+const { hashPassword, comparePassword } = require('../../utils/crypto')
+
 module.exports = (sequelize, DataTypes) => {
   const student = sequelize.define(
     'student',
@@ -27,10 +29,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false
       },
-      secondaryDepartment: {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
       grade: {
         type: DataTypes.INTEGER,
         allowNull: false
@@ -45,21 +43,16 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: 'passive'
       },
       hasVoted: {
-        type: DataTypes.BOOLEAN,
+        type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: false
-      },
-      isCandidate: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false
+        defaultValue: 'no'
       }
     },
     {
-      timestamps: false,
-      paranoid: true
+      timestamps: false
     }
   )
+
   student.beforeUpdate(instance => {
     if (instance.password) {
       return hashPassword(instance.password).then(hashedPassword => {

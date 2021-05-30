@@ -5,26 +5,5 @@
   },
   "app": {
     "adminJwtExpiry": "600"
-  },
-  "clientApp": {
-    "setPasswordPath": "/student/set-password"
-  },
-  "mail": {
-    "options": {
-      "host": "smtp.gmail.com",
-      "port": 587,
-      "secure": false,
-      "requireTLS": true,
-      "auth": {
-        "user": "iku.evotingsystem@gmail.com",
-        "pass": "IlkerBerkayBugra"
-      },
-      "tls": {
-        "ciphers": "SSLv3"
-      },
-      "logger": true,
-      "debug": true
-    },
-    "displayName": "Istanbul Kultur University"
   }
 }

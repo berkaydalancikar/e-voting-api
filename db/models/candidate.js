@@ -4,15 +4,6 @@ module.exports = (sequelize, DataTypes) => {
     {
       studentId: {
         type: DataTypes.STRING,
-        allowNull: false,
-        unique: true
-      },
-      name: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
-      surname: {
-        type: DataTypes.STRING,
         allowNull: false
       },
       department: {
@@ -29,10 +20,15 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     {
-      timestamps: false,
-      paranoid: true
+      timestamps: false
     }
   )
+
+  candidate.associate = function (models) {
+    candidate.belongsTo(models.student, {
+      foreignKey: 'id'
+    })
+  }
 
   return candidate
 }

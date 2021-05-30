@@ -8,7 +8,13 @@ module.exports = {
 
     const admins = [
       {
-        username: 'Admin',
+        username: 'Computer Engineering',
+        department: 'Computer Engineering',
+        password: password
+      },
+      {
+        username: 'Statistics',
+        department: 'Statistics',
         password: password
       }
     ]

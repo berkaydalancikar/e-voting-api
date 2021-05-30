@@ -15,11 +15,14 @@ module.exports = (sequelize, DataTypes) => {
       password: {
         type: DataTypes.STRING,
         allowNull: false
+      },
+      status: {
+        type: DataTypes.STRING,
+        defaultValue: 'passive'
       }
     },
     {
-      timestamps: false,
-      paranoid: true
+      timestamps: false
     }
   )
 
