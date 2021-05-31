@@ -18,5 +18,9 @@ module.exports = {
   ELECTION_IS_NOT_ACTIVE: {
     name: 'electionIsNotActive',
     message: 'Elections is not active'
+  },
+  CANDIDATE_CANNOT_BE_REJECTED_DURING_ELECTION: {
+    name: 'candidateCannotBeRejectedDuringElection',
+    message: 'Candidate cannot be rejected during election'
   }
 }

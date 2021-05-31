@@ -9,7 +9,7 @@ exports.startOrEndElection = async (req, res) => {
   if (election.status === statuses.PASSIVE) {
     election.status = statuses.ACTIVE
   } else {
-    election.status = statuses.ACTIVE
+    election.status = statuses.PASSIVE
   }
 
   await election.save()
