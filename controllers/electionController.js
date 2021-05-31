@@ -13,5 +13,5 @@ exports.startOrEndElection = async (req, res) => {
   }
 
   await election.save()
-  res.send(election.status)
+  res.send({ election })
 }
