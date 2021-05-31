@@ -17,9 +17,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false
       },
+      fullname: {
+        type: DataTypes.VIRTUAL,
+        get () {
+          return `${this.name} ${this.surname}`
+        }
+      },
       mail: {
-        type: DataTypes.STRING,
-        defaultValue: 'this.studentId' + '@stu.iku.edu.tr'
+        type: DataTypes.STRING
       },
       password: {
         type: DataTypes.STRING,

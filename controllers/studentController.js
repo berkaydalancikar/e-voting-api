@@ -49,7 +49,9 @@ exports.getStudents = async (req, res) => {
   const department = req.auth.department
   const students = await db.student.findAll({
     where: { department },
-    attributes: { exclude: ['password'] }
+    attributes: {
+      exclude: ['password', 'gpa', 'grade', 'department']
+    }
   })
   res.send({ students })
 }

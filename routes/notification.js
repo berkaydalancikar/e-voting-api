@@ -17,9 +17,4 @@ module.exports = async fastify => {
     { preValidation },
     notificationController.getNotifications
   )
-  fastify.get(
-    '/notifications/:id',
-    { preValidation },
-    notificationController.getNotification
-  )
 }
