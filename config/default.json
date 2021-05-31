@@ -1,7 +1,7 @@
 {
   "server": { "port": "9002", "logSeverity": "info" },
   "secrets": {
-    "jwt": "UPiMEKSiopeuIMtloPtAwdk9XgcsH7XBhYi4ab8P2FEvqZOlb1lzlHgLu3jenNC"
+    "jwt": "secret$berkay?dalancikar"
   },
   "app": {
     "adminJwtExpiry": "600"

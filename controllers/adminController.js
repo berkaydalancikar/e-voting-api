@@ -1,4 +1,5 @@
 const config = require('config')
+const { statuses } = require('../data/enums')
 const { db, ApiError } = require('./baseController')
 const {
   INVALID_PASSWORD,
@@ -35,7 +36,7 @@ exports.login = async (req, res) => {
     /*    { expiresIn: config.get('app.adminJwtExpiry') }   */
   )
 
-  isOldPassword = user.status === 'passive'
+  isOldPassword = user.status === statuses.PASSIVE
 
   return res.send({ token, isOldPassword })
 }
@@ -54,8 +55,8 @@ exports.updatePassword = async (req, res) => {
     throw new ApiError(OLD_PASSWORD_NOT_MATCH)
   }
   user.password = password
-  user.status = 'active'
+  user.status = statuses.ACTIVE
 
   await user.save()
-  res.send()
+  res.send(isOldPassword)
 }

@@ -15,12 +15,8 @@ module.exports = {
     name: 'noAuthorization',
     message: 'No authorization'
   },
-  EMAIL_TEMPLATE_NOT_FOUND: {
-    name: 'emailTemplateNotFound',
-    message: 'Email template not found'
-  },
-  EMAIL_VERIFY_TEMPLATE_ERROR: {
-    name: 'emailVerifyTemplateError',
-    message: 'Email verify template error'
+  ELECTION_IS_NOT_ACTIVE: {
+    name: 'electionIsNotActive',
+    message: 'Elections is not active'
   }
 }

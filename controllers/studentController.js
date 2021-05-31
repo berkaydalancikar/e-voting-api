@@ -14,7 +14,7 @@ exports.login = async (req, res) => {
       'surname',
       'mail',
       'password',
-      'primaryDepartment',
+      'department',
       'status',
       'hasVoted'
     ]
@@ -33,11 +33,11 @@ exports.login = async (req, res) => {
     throw new ApiError(INVALID_PASSWORD)
   }
 
-  const { id, primaryDepartment, status, hasVoted } = user
+  const { id, department, status, hasVoted } = user
   const token = await res.jwtSign({
     id,
     studentId,
-    primaryDepartment,
+    department,
     status,
     hasVoted
   })
@@ -48,16 +48,8 @@ exports.login = async (req, res) => {
 exports.getStudents = async (req, res) => {
   const department = req.auth.department
   const students = await db.student.findAll({
-    where: { primaryDepartment: department },
+    where: { department },
     attributes: { exclude: ['password'] }
   })
   res.send({ students })
-}
-
-exports.getStudent = async (req, res) => {
-  const id = req.auth.id
-  const student = await db.student.findOne({
-    where: { id }
-  })
-  res.send(student)
 }

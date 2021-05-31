@@ -1,9 +1,13 @@
 const candidateController = require('../controllers/candidateController')
 
 module.exports = async fastify => {
-  const preValidation = [fastify.authenticate]
-  const authentication = [fastify.admin]
+  const preValidation = [fastify.admin]
 
+  fastify.delete(
+    '/candidates/reject/:id',
+    { preValidation },
+    candidateController.reject
+  )
   fastify.get(
     '/candidates',
     { preValidation },
@@ -13,10 +17,5 @@ module.exports = async fastify => {
     '/student/beCandidate',
     { preValidation },
     candidateController.beCandidate
-  )
-  fastify.delete(
-    '/candidates/reject/:id',
-    { authentication },
-    candidateController.reject
   )
 }

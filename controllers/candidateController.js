@@ -1,9 +1,11 @@
-const { db } = require('./baseController')
+const { db, ApiError } = require('./baseController')
+const { statuses } = require('../data/enums')
+const { ELECTION_IS_NOT_ACTIVE } = require('../data/errors')
 
 exports.getCandidates = async (req, res) => {
   const department = req.auth.department
   const candidates = await db.candidate.findAll({
-    where: { department: department },
+    where: { department },
     include: [
       {
         model: db.student,
@@ -14,7 +16,7 @@ exports.getCandidates = async (req, res) => {
             'status',
             'studentId',
             'mail',
-            'primaryDepartment'
+            'department'
           ]
         }
       }
@@ -24,14 +26,21 @@ exports.getCandidates = async (req, res) => {
 }
 
 exports.beCandidate = async (req, res) => {
-  const { studentId, primaryDepartment } = req.auth
-  let candidate = req.body
+  const { studentId, department } = req.auth
 
-  candidate.studentId = studentId
-  candidate.department = primaryDepartment
+  const election = await db.election.findOne({ department })
 
-  candidate = await db.candidate.create(candidate)
-  res.send()
+  if (election.status === statuses.PASSIVE) {
+    throw new ApiError(ELECTION_IS_NOT_ACTIVE)
+  } else {
+    let candidate = req.body
+
+    candidate.studentId = studentId
+    candidate.department = department
+
+    candidate = await db.candidate.create(candidate)
+    res.send()
+  }
 }
 
 exports.reject = async (req, res) => {

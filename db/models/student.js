@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false
       },
-      primaryDepartment: {
+      department: {
         type: DataTypes.STRING,
         allowNull: false
       },

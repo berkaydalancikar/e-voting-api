@@ -14,7 +14,7 @@ module.exports = {
         surname: 'Student 1',
         mail: '1111111111@stu.iku.edu.tr',
         password: password,
-        primaryDepartment: 'Computer Engineering',
+        department: 'Computer Engineering',
         grade: 4,
         gpa: 3.0
       },
@@ -25,7 +25,7 @@ module.exports = {
         surname: 'Student 2',
         mail: '2222222222@stu.iku.edu.tr',
         password: password,
-        primaryDepartment: 'Computer Engineering',
+        department: 'Computer Engineering',
         grade: 4,
         gpa: 2.5
       },
@@ -36,7 +36,7 @@ module.exports = {
         surname: 'Student 1',
         mail: '3333333333@stu.iku.edu.tr',
         password: password,
-        primaryDepartment: 'Architecture',
+        department: 'Architecture',
         grade: 4,
         gpa: 2.5
       },
@@ -47,7 +47,7 @@ module.exports = {
         surname: 'Student 3',
         mail: '4444444444@stu.iku.edu.tr',
         password: password,
-        primaryDepartment: 'Computer Engineering',
+        department: 'Computer Engineering',
         grade: 4,
         gpa: 2.5
       }
