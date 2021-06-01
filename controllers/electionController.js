@@ -1,15 +1,19 @@
 const db = require('../db')
-const { statuses } = require('../data/enums')
+const { electionProgress } = require('../data/enums')
 
 exports.startOrEndElection = async (req, res) => {
   const department = req.auth.department
 
   const election = await db.election.findOne({ department })
 
-  if (election.status === statuses.PASSIVE) {
-    election.status = statuses.ACTIVE
+  if (election.status === electionProgress.IDLE) {
+    election.status = electionProgress.PRE_ELECTION
+  } else if (election.status === electionProgress.PRE_ELECTION) {
+    election.status = electionProgress.PERI_ELECTION
+  } else if (election.status === electionProgress.PERI_ELECTION) {
+    election.status = electionProgress.POST_ELECTION
   } else {
-    election.status = statuses.PASSIVE
+    election.status = electionProgress.IDLE
   }
 
   await election.save()

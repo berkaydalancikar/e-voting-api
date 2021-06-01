@@ -15,12 +15,12 @@ module.exports = {
     name: 'noAuthorization',
     message: 'No authorization'
   },
-  ELECTION_IS_NOT_ACTIVE: {
-    name: 'electionIsNotActive',
-    message: 'Elections is not active'
+  CANNOT_BE_CANDIDATE_AT_THIS_STAGE: {
+    name: 'cannotBeCandidateAtThisStage',
+    message: 'Can not be candidate at this stage'
   },
-  CANDIDATE_CANNOT_BE_REJECTED_DURING_ELECTION: {
-    name: 'candidateCannotBeRejectedDuringElection',
-    message: 'Candidate cannot be rejected during election'
+  CANDIDATE_CANNOT_BE_REJECTED_AT_THIS_STAGE: {
+    name: 'candidateCannotBeRejectedAtThisStage',
+    message: 'Candidate cannot be rejected at this stage'
   }
 }

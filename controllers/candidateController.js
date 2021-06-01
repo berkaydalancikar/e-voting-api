@@ -1,9 +1,9 @@
 const db = require('../db')
 const ApiError = require('../models/ApiError')
-const { statuses } = require('../data/enums')
+const { electionProgress } = require('../data/enums')
 const {
-  ELECTION_IS_NOT_ACTIVE,
-  CANDIDATE_CANNOT_BE_REJECTED_DURING_ELECTION
+  CANNOT_BE_CANDIDATE_AT_THIS_STAGE,
+  CANDIDATE_CANNOT_BE_REJECTED_AT_THIS_STAGE
 } = require('../data/errors')
 
 exports.getCandidates = async (req, res) => {
@@ -34,8 +34,8 @@ exports.beCandidate = async (req, res) => {
 
   const election = await db.election.findOne({ department })
 
-  if (election.status === statuses.PASSIVE) {
-    throw new ApiError(ELECTION_IS_NOT_ACTIVE)
+  if (election.status !== electionProgress.PRE_ELECTION) {
+    throw new ApiError(CANNOT_BE_CANDIDATE_AT_THIS_STAGE)
   } else {
     let candidate = req.body
 
@@ -53,8 +53,8 @@ exports.reject = async (req, res) => {
 
   const election = await db.election.findOne({ where: { department } })
 
-  if (election.status === statuses.ACTIVE) {
-    throw new ApiError(CANDIDATE_CANNOT_BE_REJECTED_DURING_ELECTION)
+  if (election.status !== electionProgress.PERI_ELECTION) {
+    throw new ApiError(CANDIDATE_CANNOT_BE_REJECTED_AT_THIS_STAGE)
   } else {
     await db.candidate.destroy({
       where: { id: parseInt(id) }

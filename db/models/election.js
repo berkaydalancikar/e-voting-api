@@ -1,3 +1,5 @@
+const { electionProgress } = require('../../data/enums')
+
 module.exports = (sequelize, DataTypes) => {
   const election = sequelize.define(
     'election',
@@ -8,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       status: {
         type: DataTypes.STRING,
-        defaultValue: 'passive'
+        defaultValue: electionProgress.IDLE
       }
     },
     {

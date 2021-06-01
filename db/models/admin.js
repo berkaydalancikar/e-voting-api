@@ -1,4 +1,5 @@
 const { hashPassword, comparePassword } = require('../../utils/crypto')
+const { userStatuses } = require('../../data/enums')
 
 module.exports = (sequelize, DataTypes) => {
   const admin = sequelize.define(
@@ -18,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       status: {
         type: DataTypes.STRING,
-        defaultValue: 'passive'
+        defaultValue: userStatuses.PASSIVE
       }
     },
     {
