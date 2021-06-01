@@ -1,4 +1,5 @@
-const { db, Op } = require('./baseController')
+const db = require('../db')
+const { Op } = require('sequelize')
 
 exports.getNotifications = async (req, res) => {
   const department = req.auth.department

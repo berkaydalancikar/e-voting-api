@@ -1,4 +1,4 @@
-const { db } = require('./baseController')
+const db = require('../db')
 const { statuses } = require('../data/enums')
 
 exports.startOrEndElection = async (req, res) => {

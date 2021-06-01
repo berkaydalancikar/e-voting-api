@@ -1,4 +1,5 @@
-const { db, ApiError } = require('./baseController')
+const db = require('../db')
+const ApiError = require('../models/ApiError')
 const { statuses } = require('../data/enums')
 const {
   ELECTION_IS_NOT_ACTIVE,

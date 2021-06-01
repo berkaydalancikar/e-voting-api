@@ -1,5 +1,6 @@
 const config = require('config')
-const { db, ApiError } = require('./baseController')
+const db = require('../db')
+const ApiError = require('../models/ApiError')
 const { INVALID_PASSWORD, USER_DOES_NOT_EXIST } = require('../data/errors')
 const { generateGuid } = require('../utils/crypto')
 
