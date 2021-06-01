@@ -83,6 +83,7 @@ exports.vote = async (req, res) => {
       candidate.votes = candidate.votes + 1
       voter.hasVoted = voteStatus.YES
 
+      await voter.save()
       await candidate.save()
     }
   }
