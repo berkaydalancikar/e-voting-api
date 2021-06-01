@@ -10,7 +10,13 @@ const electionProgress = Object.freeze({
   POST_ELECTION: 'post-election'
 })
 
+const voteStatus = Object.freeze({
+  YES: 'yes',
+  NO: 'no'
+})
+
 module.exports = {
   userStatuses,
-  electionProgress
+  electionProgress,
+  voteStatus
 }

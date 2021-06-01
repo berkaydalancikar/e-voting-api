@@ -26,5 +26,9 @@ module.exports = {
   CANNOT_VOTE_AT_THIS_STAGE: {
     name: 'cannotVoteAtThisStage',
     message: 'Cannot vote at this stage'
+  },
+  YOU_HAVE_ALREADY_VOTED: {
+    name: 'youHaveAlreadyVoted',
+    message: 'You have already voted'
   }
 }
