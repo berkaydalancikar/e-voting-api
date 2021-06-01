@@ -22,5 +22,9 @@ module.exports = {
   CANDIDATE_CANNOT_BE_REJECTED_AT_THIS_STAGE: {
     name: 'candidateCannotBeRejectedAtThisStage',
     message: 'Candidate cannot be rejected at this stage'
+  },
+  CANNOT_VOTE_AT_THIS_STAGE: {
+    name: 'cannotVoteAtThisStage',
+    message: 'Cannot vote at this stage'
   }
 }

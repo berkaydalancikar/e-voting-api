@@ -18,4 +18,5 @@ module.exports = async fastify => {
     { preValidation },
     candidateController.beCandidate
   )
+  fastify.post('/student/vote/:id', { preValidation }, candidateController.vote)
 }
