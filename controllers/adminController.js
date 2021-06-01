@@ -34,7 +34,7 @@ exports.login = async (req, res) => {
       department,
       status
     }
-    /*    { expiresIn: config.get('app.adminJwtExpiry') }   */
+    //  { expiresIn: config.get('app.adminJwtExpiry') }
   )
 
   isOldPassword = user.status === statuses.PASSIVE
