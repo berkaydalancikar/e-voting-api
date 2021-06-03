@@ -59,25 +59,48 @@ exports.reject = async (req, res) => {
 }
 
 exports.vote = async (req, res) => {
-  const { department, hasVoted, id } = req.auth
+  const { id, department } = req.auth
+  const candidateId = req.params.id
 
-  const election = await db.election.findOne({ where: { department } })
+  const election = await db.election.findOne({
+    where: { department },
+    attributes: { exclude: ['department'] }
+  })
 
   if (election.status !== electionProgress.PERI_ELECTION) {
     throw new ApiError(CANNOT_VOTE_AT_THIS_STAGE)
   } else {
-    if (hasVoted === voteStatus.YES) {
+    const voter = await db.student.findOne({
+      where: { id },
+      attributes: {
+        exclude: [
+          'name',
+          'surname',
+          'mail',
+          'password',
+          'department',
+          'status',
+          'studentId',
+          'grade',
+          'gpa',
+          'fullname'
+        ]
+      }
+    })
+    if (voter.hasVoted === voteStatus.YES) {
       throw new ApiError(YOU_HAVE_ALREADY_VOTED)
     } else {
-      const candidateId = req.params.id
-      const candidate = db.candidate.findOne({ where: { id: candidateId } })
-
-      const voter = db.student.findOne({ where: { id: id } })
-      candidate.votes = candidate.votes + 1
+      const candidate = await db.candidate.findOne({
+        where: { id: parseInt(candidateId) },
+        attributes: {
+          exclude: ['studentId', 'department', 'description']
+        }
+      })
       voter.hasVoted = voteStatus.YES
+      candidate.votes = candidate.votes + 1
 
-      await voter.save()
       await candidate.save()
+      await voter.save()
     }
   }
 

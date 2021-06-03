@@ -43,7 +43,7 @@ exports.login = async (req, res) => {
     hasVoted
   })
 
-  return res.send(token)
+  return res.send({ token })
 }
 
 exports.getStudents = async (req, res) => {
