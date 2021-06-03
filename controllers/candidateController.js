@@ -16,14 +16,7 @@ exports.getCandidates = async (req, res) => {
       {
         model: db.student,
         attributes: {
-          exclude: [
-            'password',
-            'hasVoted',
-            'status',
-            'studentId',
-            'mail',
-            'department'
-          ]
+          exclude: ['password', 'status', 'studentId', 'mail', 'department']
         }
       }
     ]
@@ -55,7 +48,7 @@ exports.reject = async (req, res) => {
 
   const election = await db.election.findOne({ where: { department } })
 
-  if (election.status !== electionProgress.PERI_ELECTION) {
+  if (election.status !== electionProgress.PRE_ELECTION) {
     throw new ApiError(CANDIDATE_CANNOT_BE_REJECTED_AT_THIS_STAGE)
   } else {
     await db.candidate.destroy({

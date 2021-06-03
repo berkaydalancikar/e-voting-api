@@ -93,7 +93,7 @@
                 },
                 "status": {
                     "defaultValue": {
-                        "value": "passive"
+                        "value": "idle"
                     },
                     "field": "status",
                     "seqType": "Sequelize.STRING"

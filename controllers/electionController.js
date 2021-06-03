@@ -4,7 +4,7 @@ const { electionProgress } = require('../data/enums')
 exports.startOrEndElection = async (req, res) => {
   const department = req.auth.department
 
-  const election = await db.election.findOne({ where: department })
+  const election = await db.election.findOne({ where: { department } })
 
   if (election.status === electionProgress.IDLE) {
     election.status = electionProgress.PRE_ELECTION

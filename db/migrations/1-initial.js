@@ -16,7 +16,7 @@ var Sequelize = require('sequelize');
 var info = {
     "revision": 1,
     "name": "initial",
-    "created": "2021-05-31T10:34:15.202Z",
+    "created": "2021-06-03T09:26:28.119Z",
     "comment": ""
 };
 
@@ -79,7 +79,7 @@ var migrationCommands = function(transaction) {
                     "status": {
                         "type": Sequelize.STRING,
                         "field": "status",
-                        "defaultValue": "passive"
+                        "defaultValue": "idle"
                     }
                 },
                 {
