@@ -60,7 +60,7 @@ exports.getStudents = async (req, res) => {
   res.send({ students })
 }
 
-exports.sendActivationMailToPassiveStudents = async (req, res) => {
+exports.sendActivationMail = async (req, res) => {
   const { department } = req.auth
   const { url } = req.body
 
@@ -71,23 +71,20 @@ exports.sendActivationMailToPassiveStudents = async (req, res) => {
     }
   })
 
-  students.map(students => sendActivationMail(students.id, url))
+  Promise.all(
+    students.map(async students => {
+      const studentToken = await db.studentToken.create({
+        studentId: students.id,
+        token: generateGuid()
+      })
+
+      const verifyUrl = `${url}${config.get('clientApp.activateStudentPath')}`
+
+      await createEmailVerifyTokenAndSendMail(students, studentToken, verifyUrl)
+    })
+  )
 
   res.send()
-}
-
-const sendActivationMail = async (studentId, url) => {
-  const studentToken = await db.studentToken.create({
-    studentId: parseInt(studentId),
-    token: generateGuid()
-  })
-
-  const student = await db.student.findOne({
-    where: { id: parseInt(studentId) }
-  })
-  const verifyUrl = `${url}${config.get('clientApp.activateStudentPath')}`
-
-  await createEmailVerifyTokenAndSendMail(student, studentToken, verifyUrl)
 }
 
 const createEmailVerifyTokenAndSendMail = async (

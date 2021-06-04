@@ -7,6 +7,6 @@ module.exports = async fastify => {
   fastify.put(
     '/students/sendActivationMail',
     { preValidation },
-    studentController.sendActivationMailToPassiveStudents
+    studentController.sendActivationMail
   )
 }
