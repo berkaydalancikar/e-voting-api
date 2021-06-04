@@ -4,6 +4,8 @@ const ApiError = require('../models/ApiError')
 const { INVALID_PASSWORD, USER_DOES_NOT_EXIST } = require('../data/errors')
 const { sendEmail } = require('./../utils/mail')
 const { generateGuid } = require('../utils/crypto')
+const { Op } = require('sequelize')
+const { userStatuses } = require('../data/enums')
 
 exports.login = async (req, res) => {
   const { studentId, password } = req.body
@@ -58,9 +60,23 @@ exports.getStudents = async (req, res) => {
   res.send({ students })
 }
 
-exports.sendActivationMail = async (req, res) => {
-  let { studentId, url } = req.body
+exports.sendActivationMailToPassiveStudents = async (req, res) => {
+  const { department } = req.auth
+  const { url } = req.body
 
+  const students = await db.student.findAll({
+    where: { [Op.and]: [{ department }, { status: userStatuses.PASSIVE }] },
+    attributes: {
+      exclude: ['password', 'gpa', 'grade', 'hasVoted']
+    }
+  })
+
+  students.map(students => sendActivationMail(students.id, url))
+
+  res.send()
+}
+
+const sendActivationMail = async (studentId, url) => {
   const studentToken = await db.studentToken.create({
     studentId: parseInt(studentId),
     token: generateGuid()
@@ -72,8 +88,6 @@ exports.sendActivationMail = async (req, res) => {
   const verifyUrl = `${url}${config.get('clientApp.activateStudentPath')}`
 
   await createEmailVerifyTokenAndSendMail(student, studentToken, verifyUrl)
-
-  res.send()
 }
 
 const createEmailVerifyTokenAndSendMail = async (
