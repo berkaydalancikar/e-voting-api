@@ -30,5 +30,13 @@ module.exports = {
   YOU_HAVE_ALREADY_VOTED: {
     name: 'youHaveAlreadyVoted',
     message: 'You have already voted'
+  },
+  EMAIL_TEMPLATE_NOT_FOUND: {
+    name: 'emailTemplateNotFound',
+    message: 'Email template not found'
+  },
+  EMAIL_TEMPLATE_VERIFY_ERROR: {
+    name: 'emailTemplateVerifyError',
+    message: 'Email template verify error'
   }
 }

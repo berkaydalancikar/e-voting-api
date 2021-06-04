@@ -7,9 +7,6 @@ const cors = require('fastify-cors')
 const formBody = require('fastify-formbody')
 const multipart = require('fastify-multipart')
 
-const ApiError = require('./models/ApiError')
-const { NO_AUTHORIZATION } = require('./data/errors')
-
 const build = (opts = {}) => {
   const app = Fastify(opts)
 

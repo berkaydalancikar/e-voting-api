@@ -101,6 +101,27 @@
             },
             "indexes": []
         },
+        "emailTemplates": {
+            "tableName": "emailTemplates",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "name": {
+                    "field": "name",
+                    "seqType": "Sequelize.STRING"
+                },
+                "subject": {
+                    "field": "subject",
+                    "seqType": "Sequelize.STRING"
+                }
+            },
+            "indexes": []
+        },
         "notifications": {
             "tableName": "notifications",
             "schema": {
@@ -194,6 +215,40 @@
                     },
                     "field": "hasVoted",
                     "seqType": "Sequelize.STRING"
+                }
+            },
+            "indexes": []
+        },
+        "studentTokens": {
+            "tableName": "studentTokens",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "studentId": {
+                    "allowNull": false,
+                    "field": "student_id",
+                    "references": {
+                        "model": "students",
+                        "key": "id"
+                    },
+                    "onDelete": "NO ACTION",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "token": {
+                    "allowNull": false,
+                    "field": "token",
+                    "seqType": "Sequelize.STRING"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
                 }
             },
             "indexes": []

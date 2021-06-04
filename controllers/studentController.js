@@ -1,8 +1,9 @@
-// const config = require('config')
+const config = require('config')
 const db = require('../db')
 const ApiError = require('../models/ApiError')
 const { INVALID_PASSWORD, USER_DOES_NOT_EXIST } = require('../data/errors')
-// const { generateGuid } = require('../utils/crypto')
+const { sendEmail } = require('./../utils/mail')
+const { generateGuid } = require('../utils/crypto')
 
 exports.login = async (req, res) => {
   const { studentId, password } = req.body
@@ -55,4 +56,45 @@ exports.getStudents = async (req, res) => {
     }
   })
   res.send({ students })
+}
+
+exports.sendActivationMail = async (req, res) => {
+  let { studentId, url } = req.body
+
+  const studentToken = await db.studentToken.create({
+    studentId: parseInt(studentId),
+    token: generateGuid()
+  })
+
+  const student = await db.student.findOne({
+    where: { id: parseInt(studentId) }
+  })
+  const verifyUrl = `${url}${config.get('clientApp.activateStudentPath')}`
+
+  await createEmailVerifyTokenAndSendMail(student, studentToken, verifyUrl)
+
+  res.send()
+}
+
+const createEmailVerifyTokenAndSendMail = async (
+  student,
+  studentToken,
+  verifyUrl
+) => {
+  const {
+    mailContent,
+    recipient,
+    subject
+  } = await db.emailTemplate.methods.generateStudentActivationEmail({
+    fullname: student.fullname,
+    email: student.mail,
+    verifyUrl,
+    token: studentToken.token
+  })
+
+  await sendEmail({
+    to: recipient,
+    html: mailContent,
+    subject
+  })
 }

@@ -5,5 +5,27 @@
   },
   "app": {
     "adminJwtExpiry": "600"
+  },
+  "clientApp": {
+    "activateStudentPath": "/student/activate"
+  },
+  "mail": {
+    "options": {
+      "host": "smtp.gmail.com",
+      "service": "gmail",
+      "port": 587,
+      "secure": false,
+      "requireTLS": true,
+      "auth": {
+        "user": "iku.evotingsystem@gmail.com",
+        "pass": "IlkerBerkayBugra"
+      },
+      "tls": {
+        "ciphers": "SSLv3"
+      },
+      "logger": true,
+      "debug": true
+    },
+    "displayName": "E-Voting System"
   }
 }

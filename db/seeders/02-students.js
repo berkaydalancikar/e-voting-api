@@ -9,10 +9,10 @@ module.exports = {
     const students = [
       {
         id: 1,
-        studentId: '1111111111',
-        name: 'Computer',
-        surname: 'Student 1',
-        mail: '1111111111@stu.iku.edu.tr',
+        studentId: '1700002314',
+        name: 'Berkay',
+        surname: 'Dalançıkar',
+        mail: 'dalancikarberkay@gmail.com',
         password: password,
         department: 'Computer Engineering',
         grade: 4,
