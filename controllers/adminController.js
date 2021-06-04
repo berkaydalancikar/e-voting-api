@@ -31,8 +31,7 @@ exports.login = async (req, res) => {
   const token = await res.jwtSign(
     {
       id,
-      department,
-      status
+      department
     }
     //  { expiresIn: config.get('app.adminJwtExpiry') }
   )
