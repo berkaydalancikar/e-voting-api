@@ -27,7 +27,7 @@ exports.login = async (req, res) => {
     throw new ApiError(INVALID_PASSWORD)
   }
 
-  const { id, department, status } = user
+  const { id, department } = user
   const token = await res.jwtSign(
     {
       id,
@@ -39,6 +39,18 @@ exports.login = async (req, res) => {
   isOldPassword = user.status === userStatuses.PASSIVE
 
   return res.send({ token, isOldPassword })
+}
+
+exports.isPassiveUser = async (req, res) => {
+  const { id } = req.auth
+
+  const admin = await db.admin.findOne({ where: { id } })
+
+  if (admin.status === userStatuses.PASSIVE) {
+    res.send({ result: true })
+  } else {
+    res.send({ result: false })
+  }
 }
 
 exports.updatePassword = async (req, res) => {
