@@ -82,7 +82,7 @@ exports.getStudents = async (req, res) => {
 
 exports.sendActivationMail = async (req, res) => {
   const { department } = req.auth
-  const { url } = req.body
+  const url = req.body
 
   const students = await db.student.findAll({
     where: { [Op.and]: [{ department }, { status: userStatuses.PASSIVE }] },

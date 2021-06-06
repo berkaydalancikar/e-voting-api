@@ -70,5 +70,5 @@ exports.updatePassword = async (req, res) => {
   user.status = userStatuses.ACTIVE
 
   await user.save()
-  res.send(isOldPassword)
+  res.send({ user })
 }
