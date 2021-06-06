@@ -6,9 +6,7 @@ exports.getElectionStatus = async (req, res) => {
 
   const election = await db.election.findOne({ where: { department } })
 
-  const status = election.status
-
-  res.send({ status })
+  res.send({ election })
 }
 
 exports.startOrEndElection = async (req, res) => {
