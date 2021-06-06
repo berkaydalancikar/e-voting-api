@@ -7,7 +7,8 @@
     "adminJwtExpiry": "600"
   },
   "clientApp": {
-    "activateStudentPath": "/student/activate"
+    "activateStudentPath": "/student/activate",
+    "resetPasswordPath": "/student/reset-password"
   },
   "mail": {
     "options": {

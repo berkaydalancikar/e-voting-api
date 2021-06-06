@@ -3,7 +3,8 @@
 module.exports = {
   up: async queryInterface => {
     const emailTemplates = [
-      { name: 'activate-student', subject: 'Student Activation' }
+      { name: 'activate-student', subject: 'Student Activation' },
+      { name: 'reset-password', subject: 'Reset Password' }
     ]
 
     await queryInterface.bulkInsert('emailTemplates', emailTemplates)

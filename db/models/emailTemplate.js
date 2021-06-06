@@ -59,6 +59,28 @@ module.exports = function (sequelize, DataTypes) {
       } catch (err) {
         throw new Error(EMAIL_TEMPLATE_VERIFY_ERROR.message)
       }
+    },
+    generateResetPasswordMail: async ({
+      fullname,
+      email,
+      verifyUrl,
+      token
+    }) => {
+      try {
+        const resetPasswordUrl = `${verifyUrl}?token=${token}`
+        const emailTemplate = await getEmailTemplate('reset-password', {
+          fullname,
+          resetPasswordUrl
+        })
+
+        return {
+          recipient: email,
+          subject: emailTemplate.subject,
+          mailContent: emailTemplate.message
+        }
+      } catch (err) {
+        throw new Error(EMAIL_TEMPLATE_VERIFY_ERROR.message)
+      }
     }
   }
 

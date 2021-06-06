@@ -6,6 +6,7 @@ const { sendEmail } = require('./../utils/mail')
 const { generateGuid } = require('../utils/crypto')
 const { Op } = require('sequelize')
 const { userStatuses } = require('../data/enums')
+const { RESET_PASSWORD_MAIL_SENT } = require('../data/messages')
 
 exports.login = async (req, res) => {
   const { studentId, password } = req.body
@@ -104,6 +105,55 @@ exports.sendActivationMail = async (req, res) => {
   )
 
   res.send()
+}
+
+exports.forgotPassword = async (req, res) => {
+  const { mail, url } = req.body
+
+  const student = await db.findOne({
+    where: { [Op.and]: [{ mail }, { status: userStatuses.ACTIVE }] }
+  })
+
+  if (!student) {
+    throw new ApiError(USER_DOES_NOT_EXIST)
+  }
+
+  const token = generateGuid()
+  const resetPasswordToken = {
+    studentId: student.id,
+    token
+  }
+
+  const verifyUrl = `${url}${config.get('clientApp.resetPasswordPath')}`
+
+  await db.sequelize.transaction(async transaction => {
+    await db.resetPasswordToken.create(resetPasswordToken, { transaction })
+    await createResetPasswordMailAndSend(student, token, verifyUrl)
+  })
+
+  res.send({
+    mail: student.mail,
+    message: RESET_PASSWORD_MAIL_SENT
+  })
+}
+
+const createResetPasswordMailAndSend = async (student, token, verifyUrl) => {
+  const {
+    mailContent,
+    recipient,
+    subject
+  } = await db.emailTemplate.methods.generateResetPasswordMail({
+    mail: student.mail,
+    token,
+    verifyUrl,
+    fullname: student.fullname
+  })
+
+  await sendEmail({
+    to: recipient,
+    html: mailContent,
+    subject
+  })
 }
 
 const createEmailVerifyTokenAndSendMail = async (
