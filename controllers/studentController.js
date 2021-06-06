@@ -47,6 +47,27 @@ exports.login = async (req, res) => {
   return res.send({ token })
 }
 
+exports.activate = async (req, res) => {
+  const { password, token } = req.body
+
+  const userToken = await db.studentToken.findOne({ where: { token } })
+
+  const student = await db.student.findOne({ id: userToken.studentId })
+
+  if (!student) {
+    throw new ApiError(USER_DOES_NOT_EXIST)
+  } else if (student.status === userStatuses.ACTIVE) {
+    throw new ApiError(USER_EXISTS_AND_ACTIVE)
+  }
+
+  student.password = password
+  student.status = userStatuses.ACTIVE
+
+  await student.save()
+
+  res.send({ status: student.status })
+}
+
 exports.getStudents = async (req, res) => {
   const department = req.auth.department
   const students = await db.student.findAll({
