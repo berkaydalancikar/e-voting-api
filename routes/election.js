@@ -3,7 +3,7 @@ const electionController = require('../controllers/electionController')
 module.exports = async fastify => {
   const preValidation = [fastify.admin]
 
-  fastify.get(
+  fastify.put(
     '/updateElectionStatus',
     { preValidation },
     electionController.startOrEndElection
