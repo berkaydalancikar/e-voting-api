@@ -4,8 +4,13 @@ module.exports = async fastify => {
   const preValidation = [fastify.admin]
 
   fastify.get(
-    '/electionStatus',
+    '/updateElectionStatus',
     { preValidation },
     electionController.startOrEndElection
+  )
+  fastify.get(
+    '/getElectionStatus',
+    { preValidation },
+    electionController.getElectionStatus
   )
 }

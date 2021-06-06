@@ -1,6 +1,16 @@
 const db = require('../db')
 const { electionProgress } = require('../data/enums')
 
+exports.getElectionStatus = async (req, res) => {
+  const department = req.auth.department
+
+  const election = await db.election.findOne({ where: { department } })
+
+  const status = election.status
+
+  res.send({ status })
+}
+
 exports.startOrEndElection = async (req, res) => {
   const department = req.auth.department
 
@@ -17,5 +27,5 @@ exports.startOrEndElection = async (req, res) => {
   }
 
   await election.save()
-  res.send({ election })
+  res.send()
 }
