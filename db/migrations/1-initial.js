@@ -11,6 +11,7 @@ var Sequelize = require('sequelize');
  * createTable "notifications", deps: []
  * createTable "students", deps: []
  * createTable "candidates", deps: [students]
+ * createTable "resetPasswordTokens", deps: [students]
  * createTable "studentTokens", deps: [students]
  *
  **/
@@ -18,7 +19,7 @@ var Sequelize = require('sequelize');
 var info = {
     "revision": 1,
     "name": "initial",
-    "created": "2021-06-04T08:01:00.880Z",
+    "created": "2021-06-06T12:14:29.732Z",
     "comment": ""
 };
 
@@ -265,6 +266,40 @@ var migrationCommands = function(transaction) {
         {
             fn: "createTable",
             params: [
+                "resetPasswordTokens",
+                {
+                    "id": {
+                        "type": Sequelize.INTEGER,
+                        "field": "id",
+                        "autoIncrement": true,
+                        "primaryKey": true,
+                        "allowNull": false
+                    },
+                    "studentId": {
+                        "type": Sequelize.INTEGER,
+                        "onUpdate": "CASCADE",
+                        "onDelete": "NO ACTION",
+                        "references": {
+                            "model": "students",
+                            "key": "id"
+                        },
+                        "field": "user_id",
+                        "allowNull": false
+                    },
+                    "token": {
+                        "type": Sequelize.STRING,
+                        "field": "token",
+                        "allowNull": false
+                    }
+                },
+                {
+                    "transaction": transaction
+                }
+            ]
+        },
+        {
+            fn: "createTable",
+            params: [
                 "studentTokens",
                 {
                     "id": {
@@ -331,6 +366,12 @@ var rollbackCommands = function(transaction) {
         {
             fn: "dropTable",
             params: ["notifications", {
+                transaction: transaction
+            }]
+        },
+        {
+            fn: "dropTable",
+            params: ["resetPasswordTokens", {
                 transaction: transaction
             }]
         },
