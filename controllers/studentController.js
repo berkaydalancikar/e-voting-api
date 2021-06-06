@@ -104,7 +104,7 @@ exports.sendActivationMail = async (req, res) => {
     })
   )
 
-  res.send()
+  res.send({ students })
 }
 
 exports.forgotPassword = async (req, res) => {
