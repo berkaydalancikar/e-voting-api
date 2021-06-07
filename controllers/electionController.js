@@ -21,6 +21,7 @@ exports.startOrEndElection = async (req, res) => {
   } else if (election.status === electionProgress.PERI_ELECTION) {
     election.status = electionProgress.POST_ELECTION
   } else {
+    await db.candidate.destroy({ where: { department } })
     election.status = electionProgress.IDLE
   }
 

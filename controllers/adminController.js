@@ -1,4 +1,4 @@
-// const config = require('config')
+const config = require('config')
 const db = require('../db')
 const ApiError = require('../models/ApiError')
 const { userStatuses } = require('../data/enums')
