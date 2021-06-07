@@ -1,7 +1,11 @@
 const config = require('config')
 const db = require('../db')
 const ApiError = require('../models/ApiError')
-const { INVALID_PASSWORD, USER_DOES_NOT_EXIST } = require('../data/errors')
+const {
+  INVALID_PASSWORD,
+  USER_DOES_NOT_EXIST,
+  TOKEN_EXPIRED
+} = require('../data/errors')
 const { sendEmail } = require('./../utils/mail')
 const { generateGuid } = require('../utils/crypto')
 const { Op } = require('sequelize')
@@ -38,12 +42,15 @@ exports.login = async (req, res) => {
     throw new ApiError(INVALID_PASSWORD)
   }
 
-  const { id, department, status, hasVoted } = user
-  const token = await res.jwtSign({
-    id,
-    studentId,
-    department
-  })
+  const { id, department } = user
+  const token = await res.jwtSign(
+    {
+      id,
+      studentId,
+      department
+    },
+    { expiresIn: config.get('app.userJwtExpiry') }
+  )
 
   return res.send({ token })
 }
@@ -53,6 +60,11 @@ exports.activate = async (req, res) => {
 
   const userToken = await db.studentToken.findOne({ where: { token } })
 
+  const studentTokenExpiry = config.get('app.studentTokenExpiry')
+
+  if (isExpired(userToken.createdAt, studentTokenExpiry)) {
+    throw new ApiError(TOKEN_EXPIRED)
+  }
   const student = await db.student.findOne({ id: userToken.studentId })
 
   if (!student) {

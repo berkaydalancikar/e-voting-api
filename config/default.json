@@ -4,7 +4,8 @@
     "jwt": "secret$berkay?dalancikar"
   },
   "app": {
-    "adminJwtExpiry": "600"
+    "userJwtExpiry": "10d",
+    "studentTokenExpiry": "604800"
   },
   "clientApp": {
     "activateStudentPath": "/student/activate",

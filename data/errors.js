@@ -38,5 +38,9 @@ module.exports = {
   EMAIL_TEMPLATE_VERIFY_ERROR: {
     name: 'emailTemplateVerifyError',
     message: 'Email template verify error'
+  },
+  TOKEN_EXPIRED: {
+    name: 'tokenExpired',
+    message: 'Token expired'
   }
 }
