@@ -46,7 +46,6 @@ exports.login = async (req, res) => {
   const token = await res.jwtSign(
     {
       id,
-      studentId,
       department
     },
     { expiresIn: config.get('app.userJwtExpiry') }
