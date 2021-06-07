@@ -18,7 +18,6 @@ exports.login = async (req, res) => {
     where: { studentId },
     attributes: [
       'id',
-      'studentId',
       'name',
       'surname',
       'mail',
@@ -46,6 +45,7 @@ exports.login = async (req, res) => {
   const token = await res.jwtSign(
     {
       id,
+      studentId,
       department
     },
     { expiresIn: config.get('app.userJwtExpiry') }

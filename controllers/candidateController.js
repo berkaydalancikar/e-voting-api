@@ -10,6 +10,10 @@ const {
 
 exports.getCandidates = async (req, res) => {
   const department = req.auth.department
+  const election = await db.election.findOne({ where: { department } })
+
+  // if election.status !== 'post-election' -> exclude: ['votes']
+
   const candidates = await db.candidate.findAll({
     where: { department },
     include: [
