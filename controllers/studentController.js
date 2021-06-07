@@ -137,6 +137,26 @@ exports.forgotPassword = async (req, res) => {
   })
 }
 
+exports.updatePassword = async (req, res) => {
+  const { id } = req.auth
+  let { oldPassword, password } = req.body
+  const user = await db.student.findOne({
+    where: { id }
+  })
+  const isOldPasswordMatch = await db.admin.methods.comparePassword(
+    oldPassword,
+    user.password
+  )
+  if (!isOldPasswordMatch) {
+    throw new ApiError(OLD_PASSWORD_NOT_MATCH)
+  }
+  user.password = password
+  user.status = userStatuses.ACTIVE
+
+  await user.save()
+  res.send({ result: 'ok' })
+}
+
 const createResetPasswordMailAndSend = async (student, token, verifyUrl) => {
   const {
     mailContent,

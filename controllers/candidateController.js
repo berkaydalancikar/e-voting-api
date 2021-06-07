@@ -39,7 +39,7 @@ exports.beCandidate = async (req, res) => {
 
     candidate = await db.candidate.create(candidate)
   }
-  res.send()
+  res.send({ candidate })
 }
 
 exports.reject = async (req, res) => {
@@ -55,7 +55,7 @@ exports.reject = async (req, res) => {
       where: { id: parseInt(id) }
     })
   }
-  res.send()
+  res.send({ election })
 }
 
 exports.vote = async (req, res) => {
@@ -104,5 +104,5 @@ exports.vote = async (req, res) => {
     }
   }
 
-  res.send()
+  res.send({ candidate })
 }
