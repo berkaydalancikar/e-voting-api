@@ -20,4 +20,5 @@ module.exports = async fastify => {
     { preValidation },
     studentController.isPassiveUser
   )
+  fastify.get('/student/activate/isPassive', studentController.isPassiveUser)
 }
