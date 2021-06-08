@@ -29,5 +29,8 @@
       "debug": true
     },
     "displayName": "E-Voting System"
+  },
+  "storage": {
+    "url": "."
   }
 }

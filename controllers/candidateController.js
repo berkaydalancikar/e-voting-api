@@ -1,18 +1,20 @@
 const db = require('../db')
+const { Op } = require('sequelize')
 const ApiError = require('../models/ApiError')
 const { electionProgress, voteStatus } = require('../data/enums')
 const {
   CANNOT_BE_CANDIDATE_AT_THIS_STAGE,
   CANDIDATE_CANNOT_BE_REJECTED_AT_THIS_STAGE,
   CANNOT_VOTE_AT_THIS_STAGE,
-  YOU_HAVE_ALREADY_VOTED
+  YOU_HAVE_ALREADY_VOTED,
+  YOU_HAVE_ALREADY_CANDIDATED
 } = require('../data/errors')
 
 exports.getCandidates = async (req, res) => {
   const department = req.auth.department
-  const election = await db.election.findOne({ where: { department } })
+  /*   const election = await db.election.findOne({ where: { department } })
 
-  // if election.status !== 'post-election' -> exclude: ['votes']
+   if election.status !== 'post-election' -> exclude: ['votes'] */
 
   const candidates = await db.candidate.findAll({
     where: { department },
@@ -29,21 +31,29 @@ exports.getCandidates = async (req, res) => {
 }
 
 exports.beCandidate = async (req, res) => {
-  const { studentId, department } = req.auth
+  const { id, department } = req.auth
 
-  const election = await db.election.findOne({ department })
+  const election = await db.election.findOne({ where: { department } })
 
   if (election.status !== electionProgress.PRE_ELECTION) {
     throw new ApiError(CANNOT_BE_CANDIDATE_AT_THIS_STAGE)
   } else {
-    let candidate = req.body
+    const isCandidateExist = await db.candidate.findOne({
+      where: { [Op.and]: [{ studentId: id }, { department }] }
+    })
 
-    candidate.studentId = studentId
-    candidate.department = department
+    if (!isCandidateExist) {
+      let candidate = req.body
 
-    candidate = await db.candidate.create(candidate)
+      candidate.studentId = id
+      candidate.department = department
+
+      candidate = await db.candidate.create(candidate)
+    } else {
+      throw new ApiError(YOU_HAVE_ALREADY_CANDIDATED)
+    }
   }
-  res.send({ candidate })
+  res.send({ election })
 }
 
 exports.reject = async (req, res) => {

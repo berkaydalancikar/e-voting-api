@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     'candidate',
     {
       studentId: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false
       },
       department: {
@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
 
   candidate.associate = function (models) {
     candidate.belongsTo(models.student, {
-      foreignKey: 'id'
+      foreignKey: 'studentId'
     })
   }
 

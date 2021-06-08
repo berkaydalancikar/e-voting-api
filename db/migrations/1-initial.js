@@ -10,6 +10,7 @@ var Sequelize = require('sequelize');
  * createTable "emailTemplates", deps: []
  * createTable "notifications", deps: []
  * createTable "students", deps: []
+ * createTable "studentImports", deps: []
  * createTable "candidates", deps: [students]
  * createTable "resetPasswordTokens", deps: [students]
  * createTable "studentTokens", deps: [students]
@@ -19,7 +20,7 @@ var Sequelize = require('sequelize');
 var info = {
     "revision": 1,
     "name": "initial",
-    "created": "2021-06-06T12:14:29.732Z",
+    "created": "2021-06-08T08:45:26.410Z",
     "comment": ""
 };
 
@@ -164,7 +165,6 @@ var migrationCommands = function(transaction) {
                     "studentId": {
                         "type": Sequelize.STRING,
                         "field": "studentId",
-                        "unique": true,
                         "allowNull": false
                     },
                     "name": {
@@ -222,9 +222,44 @@ var migrationCommands = function(transaction) {
         {
             fn: "createTable",
             params: [
+                "studentImports",
+                {
+                    "id": {
+                        "type": Sequelize.INTEGER,
+                        "field": "id",
+                        "autoIncrement": true,
+                        "primaryKey": true,
+                        "allowNull": false
+                    },
+                    "fileName": {
+                        "type": Sequelize.STRING,
+                        "field": "fileName",
+                        "allowNull": false
+                    },
+                    "createdAt": {
+                        "type": Sequelize.DATE,
+                        "field": "createdAt",
+                        "allowNull": false
+                    }
+                },
+                {
+                    "transaction": transaction
+                }
+            ]
+        },
+        {
+            fn: "createTable",
+            params: [
                 "candidates",
                 {
                     "id": {
+                        "type": Sequelize.INTEGER,
+                        "field": "id",
+                        "autoIncrement": true,
+                        "primaryKey": true,
+                        "allowNull": false
+                    },
+                    "studentId": {
                         "type": Sequelize.INTEGER,
                         "onUpdate": "CASCADE",
                         "onDelete": "NO ACTION",
@@ -232,13 +267,6 @@ var migrationCommands = function(transaction) {
                             "model": "students",
                             "key": "id"
                         },
-                        "field": "id",
-                        "autoIncrement": true,
-                        "primaryKey": true,
-                        "allowNull": false
-                    },
-                    "studentId": {
-                        "type": Sequelize.STRING,
                         "field": "studentId",
                         "allowNull": false
                     },
@@ -378,6 +406,12 @@ var rollbackCommands = function(transaction) {
         {
             fn: "dropTable",
             params: ["students", {
+                transaction: transaction
+            }]
+        },
+        {
+            fn: "dropTable",
+            params: ["studentImports", {
                 transaction: transaction
             }]
         },

@@ -31,6 +31,10 @@ module.exports = {
     name: 'youHaveAlreadyVoted',
     message: 'You have already voted'
   },
+  YOU_HAVE_ALREADY_CANDIDATED: {
+    name: 'youHaveAlreadyCandidated',
+    message: 'You have already candidated'
+  },
   EMAIL_TEMPLATE_NOT_FOUND: {
     name: 'emailTemplateNotFound',
     message: 'Email template not found'

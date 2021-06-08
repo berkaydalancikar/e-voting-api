@@ -1,287 +1,309 @@
 {
-  "tables": {
-    "admins": {
-      "tableName": "admins",
-      "schema": {
-        "id": {
-          "allowNull": false,
-          "primaryKey": true,
-          "autoIncrement": true,
-          "field": "id",
-          "seqType": "Sequelize.INTEGER"
+    "tables": {
+        "admins": {
+            "tableName": "admins",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "username": {
+                    "allowNull": false,
+                    "field": "username",
+                    "seqType": "Sequelize.STRING"
+                },
+                "department": {
+                    "allowNull": false,
+                    "field": "department",
+                    "seqType": "Sequelize.STRING"
+                },
+                "password": {
+                    "allowNull": false,
+                    "field": "password",
+                    "seqType": "Sequelize.STRING"
+                },
+                "status": {
+                    "defaultValue": {
+                        "value": "passive"
+                    },
+                    "field": "status",
+                    "seqType": "Sequelize.STRING"
+                }
+            },
+            "indexes": []
         },
-        "username": {
-          "allowNull": false,
-          "field": "username",
-          "seqType": "Sequelize.STRING"
+        "candidates": {
+            "tableName": "candidates",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "studentId": {
+                    "allowNull": false,
+                    "field": "studentId",
+                    "references": {
+                        "model": "students",
+                        "key": "id"
+                    },
+                    "onDelete": "NO ACTION",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "department": {
+                    "allowNull": false,
+                    "field": "department",
+                    "seqType": "Sequelize.STRING"
+                },
+                "description": {
+                    "allowNull": false,
+                    "field": "description",
+                    "seqType": "Sequelize.STRING"
+                },
+                "votes": {
+                    "defaultValue": {
+                        "value": 0
+                    },
+                    "field": "votes",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
         },
-        "department": {
-          "allowNull": false,
-          "field": "department",
-          "seqType": "Sequelize.STRING"
+        "elections": {
+            "tableName": "elections",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "department": {
+                    "allowNull": false,
+                    "field": "department",
+                    "seqType": "Sequelize.STRING"
+                },
+                "status": {
+                    "defaultValue": {
+                        "value": "idle"
+                    },
+                    "field": "status",
+                    "seqType": "Sequelize.STRING"
+                }
+            },
+            "indexes": []
         },
-        "password": {
-          "allowNull": false,
-          "field": "password",
-          "seqType": "Sequelize.STRING"
+        "emailTemplates": {
+            "tableName": "emailTemplates",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "name": {
+                    "field": "name",
+                    "seqType": "Sequelize.STRING"
+                },
+                "subject": {
+                    "field": "subject",
+                    "seqType": "Sequelize.STRING"
+                }
+            },
+            "indexes": []
         },
-        "status": {
-          "defaultValue": {
-            "value": "passive"
-          },
-          "field": "status",
-          "seqType": "Sequelize.STRING"
+        "notifications": {
+            "tableName": "notifications",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "title": {
+                    "allowNull": false,
+                    "field": "title",
+                    "seqType": "Sequelize.STRING"
+                },
+                "content": {
+                    "allowNull": false,
+                    "field": "content",
+                    "seqType": "Sequelize.STRING"
+                },
+                "department": {
+                    "allowNull": false,
+                    "field": "department",
+                    "seqType": "Sequelize.STRING"
+                }
+            },
+            "indexes": []
+        },
+        "resetPasswordTokens": {
+            "tableName": "resetPasswordTokens",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "studentId": {
+                    "allowNull": false,
+                    "field": "user_id",
+                    "references": {
+                        "model": "students",
+                        "key": "id"
+                    },
+                    "onDelete": "NO ACTION",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "token": {
+                    "allowNull": false,
+                    "field": "token",
+                    "seqType": "Sequelize.STRING"
+                }
+            },
+            "indexes": []
+        },
+        "students": {
+            "tableName": "students",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "studentId": {
+                    "allowNull": false,
+                    "field": "studentId",
+                    "seqType": "Sequelize.STRING"
+                },
+                "name": {
+                    "allowNull": false,
+                    "field": "name",
+                    "seqType": "Sequelize.STRING"
+                },
+                "surname": {
+                    "allowNull": false,
+                    "field": "surname",
+                    "seqType": "Sequelize.STRING"
+                },
+                "mail": {
+                    "field": "mail",
+                    "seqType": "Sequelize.STRING"
+                },
+                "password": {
+                    "allowNull": false,
+                    "field": "password",
+                    "seqType": "Sequelize.STRING"
+                },
+                "department": {
+                    "allowNull": false,
+                    "field": "department",
+                    "seqType": "Sequelize.STRING"
+                },
+                "grade": {
+                    "allowNull": false,
+                    "field": "grade",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "gpa": {
+                    "allowNull": false,
+                    "field": "gpa",
+                    "seqType": "Sequelize.FLOAT"
+                },
+                "status": {
+                    "allowNull": false,
+                    "defaultValue": {
+                        "value": "passive"
+                    },
+                    "field": "status",
+                    "seqType": "Sequelize.STRING"
+                },
+                "hasVoted": {
+                    "allowNull": false,
+                    "defaultValue": {
+                        "value": "no"
+                    },
+                    "field": "hasVoted",
+                    "seqType": "Sequelize.STRING"
+                }
+            },
+            "indexes": []
+        },
+        "studentImports": {
+            "tableName": "studentImports",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "fileName": {
+                    "allowNull": false,
+                    "field": "fileName",
+                    "seqType": "Sequelize.STRING"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "studentTokens": {
+            "tableName": "studentTokens",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "studentId": {
+                    "allowNull": false,
+                    "field": "student_id",
+                    "references": {
+                        "model": "students",
+                        "key": "id"
+                    },
+                    "onDelete": "NO ACTION",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "token": {
+                    "allowNull": false,
+                    "field": "token",
+                    "seqType": "Sequelize.STRING"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
         }
-      },
-      "indexes": []
     },
-    "candidates": {
-      "tableName": "candidates",
-      "schema": {
-        "id": {
-          "allowNull": false,
-          "primaryKey": true,
-          "autoIncrement": true,
-          "field": "id",
-          "references": {
-            "model": "students",
-            "key": "id"
-          },
-          "onDelete": "NO ACTION",
-          "onUpdate": "CASCADE",
-          "seqType": "Sequelize.INTEGER"
-        },
-        "studentId": {
-          "allowNull": false,
-          "field": "studentId",
-          "seqType": "Sequelize.STRING"
-        },
-        "department": {
-          "allowNull": false,
-          "field": "department",
-          "seqType": "Sequelize.STRING"
-        },
-        "description": {
-          "allowNull": false,
-          "field": "description",
-          "seqType": "Sequelize.STRING"
-        },
-        "votes": {
-          "defaultValue": {
-            "value": 0
-          },
-          "field": "votes",
-          "seqType": "Sequelize.INTEGER"
-        }
-      },
-      "indexes": []
-    },
-    "elections": {
-      "tableName": "elections",
-      "schema": {
-        "id": {
-          "allowNull": false,
-          "primaryKey": true,
-          "autoIncrement": true,
-          "field": "id",
-          "seqType": "Sequelize.INTEGER"
-        },
-        "department": {
-          "allowNull": false,
-          "field": "department",
-          "seqType": "Sequelize.STRING"
-        },
-        "status": {
-          "defaultValue": {
-            "value": "idle"
-          },
-          "field": "status",
-          "seqType": "Sequelize.STRING"
-        }
-      },
-      "indexes": []
-    },
-    "emailTemplates": {
-      "tableName": "emailTemplates",
-      "schema": {
-        "id": {
-          "allowNull": false,
-          "primaryKey": true,
-          "autoIncrement": true,
-          "field": "id",
-          "seqType": "Sequelize.INTEGER"
-        },
-        "name": {
-          "field": "name",
-          "seqType": "Sequelize.STRING"
-        },
-        "subject": {
-          "field": "subject",
-          "seqType": "Sequelize.STRING"
-        }
-      },
-      "indexes": []
-    },
-    "notifications": {
-      "tableName": "notifications",
-      "schema": {
-        "id": {
-          "allowNull": false,
-          "primaryKey": true,
-          "autoIncrement": true,
-          "field": "id",
-          "seqType": "Sequelize.INTEGER"
-        },
-        "title": {
-          "allowNull": false,
-          "field": "title",
-          "seqType": "Sequelize.STRING"
-        },
-        "content": {
-          "allowNull": false,
-          "field": "content",
-          "seqType": "Sequelize.STRING"
-        },
-        "department": {
-          "allowNull": false,
-          "field": "department",
-          "seqType": "Sequelize.STRING"
-        }
-      },
-      "indexes": []
-    },
-    "resetPasswordTokens": {
-      "tableName": "resetPasswordTokens",
-      "schema": {
-        "id": {
-          "allowNull": false,
-          "primaryKey": true,
-          "autoIncrement": true,
-          "field": "id",
-          "seqType": "Sequelize.INTEGER"
-        },
-        "studentId": {
-          "allowNull": false,
-          "field": "user_id",
-          "references": {
-            "model": "students",
-            "key": "id"
-          },
-          "onDelete": "NO ACTION",
-          "onUpdate": "CASCADE",
-          "seqType": "Sequelize.INTEGER"
-        },
-        "token": {
-          "allowNull": false,
-          "field": "token",
-          "seqType": "Sequelize.STRING"
-        }
-      },
-      "indexes": []
-    },
-    "students": {
-      "tableName": "students",
-      "schema": {
-        "id": {
-          "allowNull": false,
-          "primaryKey": true,
-          "autoIncrement": true,
-          "field": "id",
-          "seqType": "Sequelize.INTEGER"
-        },
-        "studentId": {
-          "allowNull": false,
-          "unique": true,
-          "field": "studentId",
-          "seqType": "Sequelize.STRING"
-        },
-        "name": {
-          "allowNull": false,
-          "field": "name",
-          "seqType": "Sequelize.STRING"
-        },
-        "surname": {
-          "allowNull": false,
-          "field": "surname",
-          "seqType": "Sequelize.STRING"
-        },
-        "mail": {
-          "field": "mail",
-          "seqType": "Sequelize.STRING"
-        },
-        "password": {
-          "allowNull": false,
-          "field": "password",
-          "seqType": "Sequelize.STRING"
-        },
-        "department": {
-          "allowNull": false,
-          "field": "department",
-          "seqType": "Sequelize.STRING"
-        },
-        "grade": {
-          "allowNull": false,
-          "field": "grade",
-          "seqType": "Sequelize.INTEGER"
-        },
-        "gpa": {
-          "allowNull": false,
-          "field": "gpa",
-          "seqType": "Sequelize.FLOAT"
-        },
-        "status": {
-          "allowNull": false,
-          "defaultValue": {
-            "value": "passive"
-          },
-          "field": "status",
-          "seqType": "Sequelize.STRING"
-        },
-        "hasVoted": {
-          "allowNull": false,
-          "defaultValue": {
-            "value": "no"
-          },
-          "field": "hasVoted",
-          "seqType": "Sequelize.STRING"
-        }
-      },
-      "indexes": []
-    },
-    "studentTokens": {
-      "tableName": "studentTokens",
-      "schema": {
-        "id": {
-          "allowNull": false,
-          "primaryKey": true,
-          "autoIncrement": true,
-          "field": "id",
-          "seqType": "Sequelize.INTEGER"
-        },
-        "studentId": {
-          "allowNull": false,
-          "field": "student_id",
-          "references": {
-            "model": "students",
-            "key": "id"
-          },
-          "onDelete": "NO ACTION",
-          "onUpdate": "CASCADE",
-          "seqType": "Sequelize.INTEGER"
-        },
-        "token": {
-          "allowNull": false,
-          "field": "token",
-          "seqType": "Sequelize.STRING"
-        },
-        "createdAt": {
-          "allowNull": false,
-          "field": "createdAt",
-          "seqType": "Sequelize.DATE"
-        }
-      },
-      "indexes": []
-    }
-  },
-  "revision": 1
+    "revision": 1
 }
