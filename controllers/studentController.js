@@ -8,6 +8,7 @@ const {
   TOKEN_EXPIRED
 } = require('../data/errors')
 const { sendEmail } = require('./../utils/mail')
+const { isExpired } = require('./../utils/commonUtils')
 const { generateGuid } = require('../utils/crypto')
 const { Op } = require('sequelize')
 const { userStatuses } = require('../data/enums')
