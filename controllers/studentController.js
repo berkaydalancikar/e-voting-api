@@ -5,7 +5,8 @@ const ApiError = require('../models/ApiError')
 const {
   INVALID_PASSWORD,
   USER_DOES_NOT_EXIST,
-  TOKEN_EXPIRED
+  TOKEN_EXPIRED,
+  USER_ACCOUNT_IS_NOT_ACTIVE
 } = require('../data/errors')
 const { sendEmail } = require('./../utils/mail')
 const { isExpired } = require('./../utils/commonUtils')
@@ -33,6 +34,9 @@ exports.login = async (req, res) => {
 
   if (!user) {
     throw new ApiError(USER_DOES_NOT_EXIST)
+  }
+  if (user.status !== userStatuses.ACTIVE) {
+    throw new ApiError(USER_ACCOUNT_IS_NOT_ACTIVE)
   }
 
   const isPasswordMatch = await db.student.methods.comparePassword(
@@ -136,7 +140,7 @@ exports.sendActivationMail = async (req, res) => {
 exports.forgotPassword = async (req, res) => {
   const { mail, url } = req.body
 
-  const student = await db.findOne({
+  const student = await db.student.findOne({
     where: { [Op.and]: [{ mail }, { status: userStatuses.ACTIVE }] }
   })
 

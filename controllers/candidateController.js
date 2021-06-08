@@ -118,5 +118,5 @@ exports.vote = async (req, res) => {
     }
   }
 
-  res.send({ candidate })
+  res.send({ election })
 }

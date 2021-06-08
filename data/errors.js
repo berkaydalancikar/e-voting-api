@@ -46,5 +46,9 @@ module.exports = {
   TOKEN_EXPIRED: {
     name: 'tokenExpired',
     message: 'Token expired'
+  },
+  USER_ACCOUNT_IS_NOT_ACTIVE: {
+    name: 'userAccountIsActive',
+    message: 'User account is not active'
   }
 }

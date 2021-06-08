@@ -21,4 +21,5 @@ module.exports = async fastify => {
     studentController.isPassiveUser
   )
   fastify.get('/student/activate/isPassive', studentController.isPassiveUser)
+  fastify.post('/student/forgot-password', studentController.forgotPassword)
 }
