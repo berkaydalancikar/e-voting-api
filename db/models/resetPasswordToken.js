@@ -10,7 +10,7 @@ module.exports = function (sequelize, DataTypes) {
       token: { type: DataTypes.STRING, allowNull: false }
     },
     {
-      timestamps: false
+      updatedAt: false
     }
   )
 

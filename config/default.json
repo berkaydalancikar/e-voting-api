@@ -5,7 +5,8 @@
   },
   "app": {
     "userJwtExpiry": "10d",
-    "studentTokenExpiry": "604800"
+    "studentTokenExpiry": "604800",
+    "resetPasswordTokenExpiry": "86400"
   },
   "clientApp": {
     "activateStudentPath": "/student/activate",

@@ -4,6 +4,7 @@ module.exports = async fastify => {
   const preValidation = [fastify.admin]
   fastify.post('/student/login', studentController.login)
   fastify.post('/activate', studentController.activate)
+  fastify.post('/reset-password', studentController.resetPassword)
   fastify.get('/students', { preValidation }, studentController.getStudents)
   fastify.put(
     '/students/sendActivationMail',

@@ -99,6 +99,26 @@ exports.activate = async (req, res) => {
   res.send({ status: student.status })
 }
 
+exports.resetPassword = async (req, res) => {
+  const { token, password } = req.body
+
+  const existingResetPasswordToken = await db.resetPasswordToken.findOne({
+    where: { token },
+    include: [{ model: db.student, where: { status: userStatuses.ACTIVE } }]
+  })
+  const expiry = config.get('app.resetPasswordTokenExpiry')
+  if (isExpired(existingResetPasswordToken.createdAt, expiry)) {
+    throw ApiError(RESET_PASSWORD_TOKEN_EXPIRED)
+  }
+  if (existingResetPasswordToken && existingResetPasswordToken.student) {
+    existingResetPasswordToken.student.password = password
+    await existingResetPasswordToken.student.save()
+    res.send({ isValid: true })
+  } else {
+    res.send({ isValid: false })
+  }
+}
+
 exports.getStudents = async (req, res) => {
   const department = req.auth.department
   const students = await db.student.findAll({
@@ -141,7 +161,9 @@ exports.forgotPassword = async (req, res) => {
   const { mail, url } = req.body
 
   const student = await db.student.findOne({
-    where: { [Op.and]: [{ mail }, { status: userStatuses.ACTIVE }] }
+    where: {
+      [Op.and]: [{ mail: mail.toLowerCase() }, { status: userStatuses.ACTIVE }]
+    }
   })
 
   if (!student) {
@@ -275,7 +297,7 @@ const createResetPasswordMailAndSend = async (student, token, verifyUrl) => {
     recipient,
     subject
   } = await db.emailTemplate.methods.generateResetPasswordMail({
-    mail: student.mail,
+    email: student.mail,
     token,
     verifyUrl,
     fullname: student.fullname

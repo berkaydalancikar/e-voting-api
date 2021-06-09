@@ -20,7 +20,7 @@ var Sequelize = require('sequelize');
 var info = {
     "revision": 1,
     "name": "initial",
-    "created": "2021-06-08T08:45:26.410Z",
+    "created": "2021-06-09T08:50:39.833Z",
     "comment": ""
 };
 
@@ -276,7 +276,7 @@ var migrationCommands = function(transaction) {
                         "allowNull": false
                     },
                     "description": {
-                        "type": Sequelize.STRING,
+                        "type": Sequelize.TEXT,
                         "field": "description",
                         "allowNull": false
                     },
@@ -317,6 +317,11 @@ var migrationCommands = function(transaction) {
                     "token": {
                         "type": Sequelize.STRING,
                         "field": "token",
+                        "allowNull": false
+                    },
+                    "createdAt": {
+                        "type": Sequelize.DATE,
+                        "field": "createdAt",
                         "allowNull": false
                     }
                 },

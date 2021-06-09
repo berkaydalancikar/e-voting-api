@@ -64,7 +64,7 @@
                 "description": {
                     "allowNull": false,
                     "field": "description",
-                    "seqType": "Sequelize.STRING"
+                    "seqType": "Sequelize.TEXT"
                 },
                 "votes": {
                     "defaultValue": {
@@ -175,6 +175,11 @@
                     "allowNull": false,
                     "field": "token",
                     "seqType": "Sequelize.STRING"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
                 }
             },
             "indexes": []
