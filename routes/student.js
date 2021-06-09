@@ -21,6 +21,16 @@ module.exports = async fastify => {
     { preValidation },
     studentController.isPassiveUser
   )
+  fastify.get(
+    '/students/deleteAll',
+    { preValidation },
+    studentController.deleteAll
+  )
   fastify.get('/student/activate/isPassive', studentController.isPassiveUser)
   fastify.post('/student/forgot-password', studentController.forgotPassword)
+  fastify.post(
+    '/students/bulk',
+    { preValidation },
+    studentController.createStudentsBulk
+  )
 }

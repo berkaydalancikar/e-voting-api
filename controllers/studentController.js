@@ -12,7 +12,7 @@ const { sendEmail } = require('./../utils/mail')
 const { isExpired } = require('./../utils/commonUtils')
 const { generateGuid } = require('../utils/crypto')
 const { Op } = require('sequelize')
-const { userStatuses } = require('../data/enums')
+const { userStatuses, voteStatus } = require('../data/enums')
 const { RESET_PASSWORD_MAIL_SENT } = require('../data/messages')
 
 exports.login = async (req, res) => {
@@ -130,6 +130,14 @@ exports.getStudents = async (req, res) => {
   res.send({ students })
 }
 
+exports.deleteAll = async (req, res) => {
+  const { department } = req.auth
+
+  const students = await db.student.destroy({ where: { department } })
+
+  res.send({ students })
+}
+
 exports.sendActivationMail = async (req, res) => {
   const { department } = req.auth
   const url = req.body
@@ -211,7 +219,7 @@ exports.updatePassword = async (req, res) => {
 
 exports.createStudentsBulk = async (req, res) => {
   const { department } = req.auth
-  const fileData = req.file()
+  const fileData = await req.file()
   const studentData = getStudentDataFromExcel(fileData)
 
   const students = []
@@ -221,42 +229,35 @@ exports.createStudentsBulk = async (req, res) => {
       name: item.name,
       surname: item.surname,
       mail: item.mail,
+      password: generateGuid(),
       department: item.department,
       grade: item.grade,
-      gpa: item.gpa
+      gpa: item.gpa,
+      status: userStatuses.PASSIVE,
+      hasVoted: voteStatus.NO
     }
 
-    students.push(student)
+    if (item.department === department) {
+      students.push(student)
+    }
   }
 
-  await db.sequelize.transaction(async transaction => {
-    const fileName = await uploadFile({
-      file: fileData,
-      folder: nodeUtil.format(STUDENT_IMPORT_FOLDER, department)
-    })
-    const studentImport = await db.studentImport.create(
-      {
-        fileName,
-        createdByDepartment: department
-      },
-      { transaction }
-    )
-  })
-
   await db.student.bulkCreate(students, {
-    transaction,
     updateOnDuplicate: [
       'studentId',
       'name',
       'surname',
       'mail',
+      'password',
       'department',
       'grade',
-      'gpa'
+      'gpa',
+      'status',
+      'hasVoted'
     ]
   })
 
-  res.send()
+  res.send({ students })
 }
 
 const getStudentDataFromExcel = fileData => {
