@@ -10,7 +10,6 @@ var Sequelize = require('sequelize');
  * createTable "emailTemplates", deps: []
  * createTable "notifications", deps: []
  * createTable "students", deps: []
- * createTable "studentImports", deps: []
  * createTable "candidates", deps: [students]
  * createTable "resetPasswordTokens", deps: [students]
  * createTable "studentTokens", deps: [students]
@@ -20,7 +19,7 @@ var Sequelize = require('sequelize');
 var info = {
     "revision": 1,
     "name": "initial",
-    "created": "2021-06-09T08:50:39.833Z",
+    "created": "2021-06-10T06:47:49.534Z",
     "comment": ""
 };
 
@@ -222,34 +221,6 @@ var migrationCommands = function(transaction) {
         {
             fn: "createTable",
             params: [
-                "studentImports",
-                {
-                    "id": {
-                        "type": Sequelize.INTEGER,
-                        "field": "id",
-                        "autoIncrement": true,
-                        "primaryKey": true,
-                        "allowNull": false
-                    },
-                    "fileName": {
-                        "type": Sequelize.STRING,
-                        "field": "fileName",
-                        "allowNull": false
-                    },
-                    "createdAt": {
-                        "type": Sequelize.DATE,
-                        "field": "createdAt",
-                        "allowNull": false
-                    }
-                },
-                {
-                    "transaction": transaction
-                }
-            ]
-        },
-        {
-            fn: "createTable",
-            params: [
                 "candidates",
                 {
                     "id": {
@@ -411,12 +382,6 @@ var rollbackCommands = function(transaction) {
         {
             fn: "dropTable",
             params: ["students", {
-                transaction: transaction
-            }]
-        },
-        {
-            fn: "dropTable",
-            params: ["studentImports", {
                 transaction: transaction
             }]
         },

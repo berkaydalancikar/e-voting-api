@@ -252,29 +252,6 @@
             },
             "indexes": []
         },
-        "studentImports": {
-            "tableName": "studentImports",
-            "schema": {
-                "id": {
-                    "allowNull": false,
-                    "primaryKey": true,
-                    "autoIncrement": true,
-                    "field": "id",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "fileName": {
-                    "allowNull": false,
-                    "field": "fileName",
-                    "seqType": "Sequelize.STRING"
-                },
-                "createdAt": {
-                    "allowNull": false,
-                    "field": "createdAt",
-                    "seqType": "Sequelize.DATE"
-                }
-            },
-            "indexes": []
-        },
         "studentTokens": {
             "tableName": "studentTokens",
             "schema": {

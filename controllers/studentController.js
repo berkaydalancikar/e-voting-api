@@ -96,23 +96,26 @@ exports.activate = async (req, res) => {
 
   await student.save()
 
+  await userToken.destroy()
+
   res.send({ status: student.status })
 }
 
 exports.resetPassword = async (req, res) => {
   const { token, password } = req.body
 
-  const existingResetPasswordToken = await db.resetPasswordToken.findOne({
+  const resetPasswordToken = await db.resetPasswordToken.findOne({
     where: { token },
     include: [{ model: db.student, where: { status: userStatuses.ACTIVE } }]
   })
   const expiry = config.get('app.resetPasswordTokenExpiry')
-  if (isExpired(existingResetPasswordToken.createdAt, expiry)) {
+  if (isExpired(resetPasswordToken.createdAt, expiry)) {
     throw ApiError(RESET_PASSWORD_TOKEN_EXPIRED)
   }
-  if (existingResetPasswordToken && existingResetPasswordToken.student) {
-    existingResetPasswordToken.student.password = password
-    await existingResetPasswordToken.student.save()
+  if (resetPasswordToken && resetPasswordToken.student) {
+    resetPasswordToken.student.password = password
+    await resetPasswordToken.student.save()
+    await resetPasswordToken.destroy()
     res.send({ isValid: true })
   } else {
     res.send({ isValid: false })
@@ -133,9 +136,28 @@ exports.getStudents = async (req, res) => {
 exports.deleteAll = async (req, res) => {
   const { department } = req.auth
 
-  const students = await db.student.destroy({ where: { department } })
+  const students = await db.student.findAll({ where: { department } })
 
-  res.send({ students })
+  Promise.all(
+    students.map(async student => {
+      const studentToken = await db.studentToken.findOne({
+        where: { studentId: student.id }
+      })
+      if (studentToken) {
+        await studentToken.destroy()
+      }
+      const resetPasswordToken = await db.resetPasswordToken.findOne({
+        where: { studentId: student.id }
+      })
+      if (resetPasswordToken) {
+        await resetPasswordToken.destroy()
+      }
+
+      await student.destroy()
+    })
+  )
+
+  res.send({ department })
 }
 
 exports.sendActivationMail = async (req, res) => {
@@ -168,14 +190,14 @@ exports.sendActivationMail = async (req, res) => {
 exports.forgotPassword = async (req, res) => {
   const { mail, url } = req.body
 
-  const student = await db.student.findOne({
-    where: {
-      [Op.and]: [{ mail: mail.toLowerCase() }, { status: userStatuses.ACTIVE }]
-    }
-  })
+  const student = await db.student.findOne({ where: { mail } })
 
   if (!student) {
     throw new ApiError(USER_DOES_NOT_EXIST)
+  }
+
+  if (student.status !== userStatuses.ACTIVE) {
+    throw new ApiError(USER_ACCOUNT_IS_NOT_ACTIVE)
   }
 
   const token = generateGuid()
